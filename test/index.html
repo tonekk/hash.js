@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+  <head>
+
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jasmine/1.3.1/jasmine.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jasmine/1.3.1/jasmine-html.js"></script>
+
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/jasmine/1.3.1/jasmine.css" />
+
+    <script type="text/javascript" src="../hash.js"></script>
+
+    <script type="text/javascript">
+
+      /*
+       * Test suite
+       */
+      describe("hash.js", function() {
+
+        afterEach(function() {
+          window.location.hash = "";
+        });
+
+        /*
+         * Specs
+         */
+        it("should set normal key", function() {
+          hash('foo', 'bar');
+
+          expect(window.location.hash).toBe('#!&foo=bar');
+        });
+
+        it("should set array", function() {
+          hash('foo', ['bar', 'baz']);
+
+          expect(window.location.hash).toBe('#!&foo[]=bar&foo[]=baz');
+        });
+
+        it("should get normal key", function() {
+
+          window.location.hash = '#!&foo=bar';
+
+          // Reload hash.js to ensure location.hash is transformed to object
+          $.getScript('../hash.js', function() {
+            expect(hash('foo')).toBe('bar');
+          });
+        });
+
+        it("should get array key", function() {
+
+          window.location.hash = '#!&array[]=arr&array[]=ay';
+
+          // Reload hash.js to ensure location.hash is transformed to object
+          $.getScript('../hash.js', function() {
+            expect(hash('array')).toBe(['arr', 'ay']);
+          });
+        });
+
+        it("should get & set", function() {
+
+          window.location.hash = '#!&foo=bar&array[]=arr&array[]=ay';
+
+          // Reload hash.js to ensure location.hash is transformed to object
+          $.getScript('../hash.js', function() {
+            expect(hash('array')).toBe(['arr', 'ay']);
+            hash('array', ['yo', 'lo']);
+            expect(window.location.hash).toBe('#!&foo=bar&array[]=yo&array[]=lo');
+            expect(hash('array')).toBe(['yo', 'lo']);
+            expect(hash('foo')).toBe('bar');
+
+            hash('key', 'random');
+            expect(hash('key')).toBe('random');
+
+
+            window.location.hash = "";
+          });
+        });
+      });
+
+
+      $(function() {
+        /*
+         * Execute jasmine html runner
+         */
+
+        var jasmineEnv = jasmine.getEnv();
+        jasmineEnv.updateInterval = 250;
+
+        var htmlReporter = new jasmine.HtmlReporter();
+        jasmineEnv.addReporter(htmlReporter);
+        jasmineEnv.specFilter = function(spec) {
+          return htmlReporter.specFilter(spec);
+        };
+
+        jasmineEnv.execute();
+
+      });
+    </script>
+  </head>
+
+  <body></body>
+</html>

@@ -13,7 +13,8 @@ hash.js
  */
  
 hash('foo'); // 'bar'
-hash('array'); // [1, 2]
+hash('array'); // ['1', '2']
+hash(); // { foo: 'bar', array: ['1', '2'] }
 ```
 
 ## Set

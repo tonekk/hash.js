@@ -1,48 +1,48 @@
 (function(window) {
 
-  var specialCharRegex = /[=\[\]\&]/,
+  var locationHash,
+      helpers = {},
+      specialCharRegex = /[=\[\]\&]/,
       arrayKeyRegex =  /(.*)\[\]=(.*)/,
       normalKeyRegex =  /(.*)=(.*)/;
 
-  /* Compute initial locationHash object from url */
-  var locationHash = (function() {
 
-    var retVal = {},
+  helpers.parseHash = function() {
+
+    var newLocationHash = {},
         keyValuePairs = window.location.hash.slice(2).split('&');
-
 
     for (var i = 0; i < keyValuePairs.length; i++) {
 
       var matches = null,
           keyValuePair = keyValuePairs[i];
 
-      if(keyValuePair === "") {
+      if (keyValuePair === "") {
         continue;
       }
 
-      if(matches = keyValuePair.match(arrayKeyRegex)) {
-        if(retVal[matches[1]]) {
-          retVal[matches[1]].push(matches[2]);
+      if (matches = keyValuePair.match(arrayKeyRegex)) {
+        if (newLocationHash[matches[1]]) {
+          newLocationHash[matches[1]].push(matches[2]);
         } else {
-          retVal[matches[1]] = [matches[2]];
+          newLocationHash[matches[1]] = [matches[2]];
         }
-      } else if(matches = keyValuePair.match(normalKeyRegex)) {
-        retVal[matches[1]] = matches[2];
+      } else if (matches = keyValuePair.match(normalKeyRegex)) {
+        newLocationHash[matches[1]] = matches[2];
       }
     }
 
-    return retVal;
-
-  })();
+    locationHash = newLocationHash;
+  };
 
   /* Write locationHash object to url, when it changes */
-  var updateLocationHash = function() {
+  helpers.updateUrl = function() {
 
     var newLocationHash = "#!";
 
-    for(var key in locationHash) {
-      if(locationHash[key] instanceof Array) {
-        for(var i = 0; i < locationHash[key].length; i++) {
+    for (var key in locationHash) {
+      if (locationHash[key] instanceof Array) {
+        for (var i = 0; i < locationHash[key].length; i++) {
           newLocationHash += '&' + key + '[]=' + locationHash[key][i];
         }
       } else {
@@ -50,27 +50,41 @@
       }
     }
 
+    /* Temporarily deactivate event */
+    window.onhashchange = null;
     window.location.hash = newLocationHash;
+    window.onhashchange = helpers.parseHash;
   };
+
+  /* Compute initial locationHash object from url */
+  helpers.parseHash();
+
+  /* Set onhashchange event to update locationHash */
+  window.onhashchange = helpers.parseHash;
 
   /* Main function to get / set location#hash */
   hash = function(key, val) {
 
-    // '=', '[', ']' and '&' are special chars
-    if(key.match(specialCharRegex)) {
+    /* Should return locationHash with arguments */
+    if (!arguments.length) {
+      return locationHash;
+    }
+
+    /* '=', '[', ']' and '&' are special chars */
+    if (key.match(specialCharRegex)) {
       throw('Cannot use key \'' + key + '\', because it contains special characters.')
     }
 
-    if(arguments.length == 2) {
+    if (arguments.length == 2) {
 
       /* Passing undefined deletes key */
-      if(val === undefined) {
+      if (val === undefined) {
         delete locationHash[key];
       } else {
         locationHash[key] = val;
       }
 
-      updateLocationHash();
+      helpers.updateUrl();
 
     } else {
       return locationHash[key];

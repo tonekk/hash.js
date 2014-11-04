@@ -39,47 +39,56 @@
 
         it("should get normal key", function() {
 
-          window.location.hash = '#!&foo=bar';
-
-          // Reload hash.js to ensure location.hash is transformed to object
-          $.getScript('../hash.js', function() {
-            expect(hash('foo')).toBe('bar');
+          runs(function() {
+            window.location.hash = '#!&foo=bar';
           });
+
+          waitsFor(function() {
+            return hash('foo') == 'bar';
+          }, "hash('foo') should be 'bar'", 1000);
         });
 
         it("should get array key", function() {
 
-          window.location.hash = '#!&array[]=arr&array[]=ay';
-
-          // Reload hash.js to ensure location.hash is transformed to object
-          $.getScript('../hash.js', function() {
-            expect(hash('array')).toBe(['arr', 'ay']);
+          runs(function() {
+            window.location.hash = '#!&array[]=arr&array[]=ay';
           });
+
+          waitsFor(function() {
+            return hash('array') instanceof Array &&
+                   hash('array')[0] == 'arr' &&
+                   hash('array')[1] == 'ay';
+          }, "hash('array') should be ['arr', 'ay']", 1000);
         });
 
         it("should get & set", function() {
 
-          window.location.hash = '#!&foo=bar&array[]=arr&array[]=ay';
+          runs(function() {
+            window.location.hash = '#!&foo=bar&array[]=arr&array[]=ay';
+          });
 
-          // Reload hash.js to ensure location.hash is transformed to object
-          $.getScript('../hash.js', function() {
-            expect(hash('array')).toBe(['arr', 'ay']);
+          waitsFor(function() {
+            return hash('array') instanceof Array &&
+                   hash('array')[0] == 'arr' &&
+                   hash('array')[1] == 'ay' &&
+                   hash('foo') == 'bar';
+          }, "hash('array') should be ['arr', 'ay']", 1000);
+
+
+          runs(function() {
             hash('array', ['yo', 'lo']);
             expect(window.location.hash).toBe('#!&foo=bar&array[]=yo&array[]=lo');
-            expect(hash('array')).toBe(['yo', 'lo']);
+            expect(hash('array')[0]).toBe('yo');
+            expect(hash('array')[1]).toBe('lo');
             expect(hash('foo')).toBe('bar');
 
             hash('key', 'random');
             expect(hash('key')).toBe('random');
-
-
-            window.location.hash = "";
           });
         });
       });
 
-
-      $(function() {
+      document.addEventListener('DOMContentLoaded', function() {
         /*
          * Execute jasmine html runner
          */

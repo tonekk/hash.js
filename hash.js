@@ -1,10 +1,10 @@
 (function(window) {
 
-  var locationHash,
-      helpers = {},
+  var arrayKeyRegex =  /(.*)\[\]=(.*)/,
       specialCharRegex = /[=\[\]\&]/,
-      arrayKeyRegex =  /(.*)\[\]=(.*)/,
       normalKeyRegex =  /(.*)=(.*)/;
+      helpers = {},
+      locationHash;
 
 
   helpers.parseHash = function() {

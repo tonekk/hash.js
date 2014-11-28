@@ -2,6 +2,7 @@ hash.js
 ========
 
 [![License](http://img.shields.io/:license-mit-blue.svg)](http://tonekk.mit-license.org)
+[![Bower version](https://badge.fury.io/bo/hash.js.svg)](http://badge.fury.io/bo/hash.js)
 
 **hash.js** is a super tiny framework to handle your [location.hash](http://www.w3schools.com/jsref/prop_loc_hash.asp)
 

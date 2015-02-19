@@ -2,7 +2,7 @@
 
   var arrayKeyRegex =  /(.*)\[\]=(.*)/,
       specialCharRegex = /[=\[\]\&]/,
-      normalKeyRegex =  /(.*)=(.*)/;
+      normalKeyRegex =  /(.*)=(.*)/,
       helpers = {},
       locationHash;
 

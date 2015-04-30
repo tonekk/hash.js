@@ -1,6 +1,6 @@
 {
   "name": "hash-js",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "hash.js is a super tiny framework to handle your location.hash",
   "main": "hash.js",
   "directories": {

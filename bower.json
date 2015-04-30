@@ -1,7 +1,7 @@
 {
   "name": "hash.js",
   "main": "hash.js",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "homepage": "https://github.com/tonekk/hash.js",
   "description": "Super tiny framework to handle your location.hash",
   "moduleType": [

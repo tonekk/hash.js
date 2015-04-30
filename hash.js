@@ -91,4 +91,8 @@
     }
   };
 
+  if (module !== undefined) {
+    module.exports = hash;
+  }
+
 })(window);

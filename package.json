@@ -1,0 +1,27 @@
+{
+  "name": "hash.js",
+  "version": "1.0.0",
+  "description": "hash.js is a super tiny framework to handle your location.hash",
+  "main": "hash.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tonekk/hash.js.git"
+  },
+  "keywords": [
+    "location",
+    "hash",
+    "object"
+  ],
+  "author": "Finn-Lennart Heemeyer <finn@heemeyer.net> (http://hwz.berlin)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tonekk/hash.js/issues"
+  },
+  "homepage": "https://github.com/tonekk/hash.js"
+}

@@ -1,5 +1,5 @@
 {
-  "name": "hash.js",
+  "name": "hash-js",
   "version": "1.0.0",
   "description": "hash.js is a super tiny framework to handle your location.hash",
   "main": "hash.js",
